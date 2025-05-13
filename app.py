@@ -128,8 +128,8 @@ def extract_text_from_file(file_path):
 
 def analyze_resume_for_ats(resume_text, job_description, job_type, experience_level):
     # Configure the Gemini API
-    api_key = os.environ.get("GEMINI_API_KEY", "AIzaSyASwGzSeJI_G0shdSWt3ukhgJPpqABBadM")  # Replace with your actual key for testing
-    if not api_key or api_key == "AIzaSyASwGzSeJI_G0shdSWt3ukhgJPpqABBadM":
+    api_key = os.environ.get("GEMINI_API_KEY", "your_gemini_api_key_here")  # Replace with your actual key for testing
+    if not api_key or api_key == "your_gemini_api_key_here":
         return {
             "error": "Valid GEMINI_API_KEY not configured. Either set it in environment variables or in the code.",
             "ats_score": 75,
