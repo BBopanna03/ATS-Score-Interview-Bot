@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume ATS Analysis Results{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-chart-bar me-3"></i>ATS Analysis Results</h1>
+            <a href="{{ url_for('index') }}" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>New Analysis
+            </a>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">ATS Score</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 text-center">
+                                <div class="d-inline-block position-relative" style="width: 160px; height: 160px;">
+                                    <svg viewBox="0 0 36 36" class="position-absolute top-0 start-0 w-100 h-100">
+                                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                              fill="none" stroke="#e9ecef" stroke-width="3" stroke-dasharray="100, 100"/>
+                                        <path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                                              fill="none" stroke="#4a6eb5" stroke-width="3" stroke-dasharray="{{ ats_analysis.ats_score }}, 100"/>
+                                    </svg>
+                                    <div class="position-absolute top-50 start-50 translate-middle text-center">
+                                        <h1 class="display-4 mb-0 fw-bold">{{ ats_analysis.ats_score }}</h1>
+                                        <p class="mb-0">out of 100</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <h5>Job Type: <span class="text-primary">{{ job_type|capitalize }}</span></h5>
+                                    <h5>Experience Level: <span class="text-primary">{{ experience_level }}</span></h5>
+                                </div>
+                                <p class="lead">{{ ats_analysis.explanation }}</p>
+                                <a href="{{ url_for('interview') }}" class="btn btn-primary btn-lg mt-3">
+                                    <i class="fas fa-user-tie me-2"></i>Start Interview Practice
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-check-circle me-2"></i>Key Skills Matched</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if ats_analysis.key_skills_matched %}
+                            {% for skill in ats_analysis.key_skills_matched %}
+                                <span class="skill-badge matched-skill-badge">{{ skill }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No key skills matched with the job description.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Missing Skills</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if ats_analysis.missing_skills %}
+                            {% for skill in ats_analysis.missing_skills %}
+                                <span class="skill-badge missing-skill-badge">{{ skill }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No missing skills identified.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-12 mb-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Recommendations</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if ats_analysis.recommendations %}
+                            <ul class="list-unstyled">
+                                {% for recommendation in ats_analysis.recommendations %}
+                                    <li class="recommendation-item mb-3 ps-3">{{ recommendation }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="text-muted">No specific recommendations at this time.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Debug Information{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0">Debug Information</h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    <h4>Environment</h4>
+                    <div class="alert alert-info">
+                        <p><strong>Python Version:</strong> {{ debug_data.environment.python_version }}</p>
+                        <p><strong>Gemini API Key Set:</strong> 
+                            {% if debug_data.environment.gemini_api_key_set %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span> 
+                                <small class="text-danger">API key not found in environment variables</small>
+                            {% endif %}
+                        </p>
+                        <p><strong>Upload Folder Exists:</strong> 
+                            {% if debug_data.environment.upload_folder_exists %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </p>
+                        <p><strong>Session Data Directory Exists:</strong> 
+                            {% if debug_data.environment.session_data_dir_exists %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-danger">No</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h4>Libraries</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Library</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Flask</td>
+                                <td>{{ debug_data.environment.libraries.flask }}</td>
+                            </tr>
+                            <tr>
+                                <td>PyTesseract</td>
+                                <td>{{ debug_data.environment.libraries.pytesseract_installed }}</td>
+                            </tr>
+                            <tr>
+                                <td>PyPDF2</td>
+                                <td>{{ debug_data.environment.libraries.pypdf2_installed }}</td>
+                            </tr>
+                            <tr>
+                                <td>OpenCV</td>
+                                <td>{{ debug_data.environment.libraries.opencv_installed }}</td>
+                            </tr>
+                            <tr>
+                                <td>python-docx</td>
+                                <td>{{ debug_data.environment.libraries.docx_installed }}</td>
+                            </tr>
+                            <tr>
+                                <td>Google Generative AI</td>
+                                <td>{{ debug_data.environment.libraries.google_generativeai_installed }}</td>
+                            </tr>
+                            <tr>
+                                <td>Tesseract OCR</td>
+                                <td>
+                                    {% if debug_data.environment.tesseract_version is defined %}
+                                        {{ debug_data.environment.tesseract_version }}
+                                    {% elif debug_data.environment.tesseract_error is defined %}
+                                        <span class="badge bg-danger">Error</span>
+                                        <small class="text-danger">{{ debug_data.environment.tesseract_error }}</small>
+                                    {% else %}
+                                        <span class="badge bg-warning">Unknown</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mb-4">
+                    <h4>Session Data</h4>
+                    <div class="alert alert-info">
+                        <p><strong>Cookie Session Keys:</strong></p>
+                        <ul>
+                            {% if debug_data.session.keys %}
+                                {% for key in debug_data.session.keys %}
+                                    <li>{{ key }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li>No session keys found</li>
+                            {% endif %}
+                        </ul>
+                        
+                        <p><strong>Session ID:</strong> {{ debug_data.session.session_id }}</p>
+                        <p><strong>Server-side Session Data:</strong> 
+                            {% if debug_data.session.session_data_available %}
+                                <span class="badge bg-success">Available</span>
+                            {% else %}
+                                <span class="badge bg-danger">Not Available</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <h4>Additional Information</h4>
+                    <div class="alert alert-secondary">
+                        <p>Having trouble with the application? Here are some common issues:</p>
+                        <ul>
+                            <li><strong>Gemini API Key:</strong> Make sure you've set the GEMINI_API_KEY environment variable with a valid API key.</li>
+                            <li><strong>Tesseract OCR:</strong> For image-based resumes, ensure Tesseract is installed and in your PATH.</li>
+                            <li><strong>File Uploads:</strong> Check that the 'uploads' folder exists and has write permissions.</li>
+                            <li><strong>Session Data:</strong> Check that the 'session_data' folder exists and has write permissions.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Return to Home
+                    </a>
+                    <button class="btn btn-outline-secondary" onclick="window.location.reload()">
+                        <i class="fas fa-sync-alt me-2"></i>Refresh Debug Info
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

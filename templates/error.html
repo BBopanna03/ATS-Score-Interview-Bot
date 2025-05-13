@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Error Occurred{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h3 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>An Error Occurred</h3>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <i class="fas fa-bug fa-4x text-danger mb-3"></i>
+                    <h4>{{ error_class }}</h4>
+                    <p class="lead">{{ error_message }}</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <h5><i class="fas fa-info-circle me-2"></i>Possible Solutions:</h5>
+                    <ul class="mb-0">
+                        <li>Check if all required dependencies are installed correctly</li>
+                        <li>Ensure your Gemini API key is set properly in environment variables</li>
+                        <li>Verify that Tesseract OCR is installed if you're using image-based resumes</li>
+                        <li>Make sure the 'uploads' directory exists and has proper permissions</li>
+                        <li>Try a different file format for your resume</li>
+                    </ul>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="fas fa-home me-2"></i>Return to Home
+                    </a>
+                    <a href="{{ url_for('debug_info') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-wrench me-2"></i>View Debug Information
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

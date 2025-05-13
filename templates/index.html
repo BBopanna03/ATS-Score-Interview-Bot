@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Resume ATS Analyzer - Upload{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="mb-0"><i class="fas fa-upload me-2"></i>Upload Resume & Job Description</h2>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('upload_file') }}" enctype="multipart/form-data" class="form-container">
+                    <div class="mb-4">
+                        <h4>Step 1: Select Job Type</h4>
+                        <div class="btn-group d-flex" role="group">
+                            <input type="radio" class="btn-check" name="job_type" id="technical" value="technical" checked>
+                            <label class="btn btn-outline-primary" for="technical">Technical</label>
+                            
+                            <input type="radio" class="btn-check" name="job_type" id="non-technical" value="non-technical">
+                            <label class="btn btn-outline-primary" for="non-technical">Non-Technical</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4>Step 2: Select Experience Level</h4>
+                        <div class="row">
+                            {% for key, value in experience_levels.items() %}
+                            <div class="col-md-3 mb-2">
+                                <input type="radio" class="btn-check" name="experience_level" id="{{ key }}" value="{{ key }}" {% if key == 'entry' %}checked{% endif %}>
+                                <label class="btn btn-outline-primary w-100" for="{{ key }}">{{ value }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4>Step 3: Enter Job Description</h4>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" placeholder="Enter job description here" name="job_description" id="job_description" style="height: 200px" required></textarea>
+                            <label for="job_description">Job Description</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4>Step 4: Upload Your Resume</h4>
+                        <div class="mb-3">
+                            <label for="resume" class="form-label">Upload resume (PDF, DOCX, JPG, JPEG, PNG)</label>
+                            <input class="form-control" type="file" id="resume" name="resume" accept=".pdf,.docx,.jpg,.jpeg,.png" required>
+                            <div class="form-text">
+                                Max file size: 16MB. Accepted formats: PDF, DOCX, JPG, JPEG, PNG.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary btn-lg" type="submit">
+                            <i class="fas fa-check-circle me-2"></i>Analyze Resume
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-info-circle me-2"></i>About the ATS Analyzer</h3>
+            </div>
+            <div class="card-body">
+                <p>Our ATS (Applicant Tracking System) Analyzer helps you improve your resume's chances of getting past automated screening systems used by employers.</p>
+                
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-search fa-3x mb-3 text-primary"></i>
+                            <h5>ATS Score Analysis</h5>
+                            <p class="text-muted">See how well your resume matches the job description with a detailed score.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-list-check fa-3x mb-3 text-primary"></i>
+                            <h5>Skills Gap Analysis</h5>
+                            <p class="text-muted">Identify missing skills and qualifications needed for the job.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <div class="p-3">
+                            <i class="fas fa-comments fa-3x mb-3 text-primary"></i>
+                            <h5>AI Interview Simulation</h5>
+                            <p class="text-muted">Practice with personalized interview questions based on your resume and the job.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Ensure file size is not too large
+    document.getElementById('resume').addEventListener('change', function() {
+        const fileSize = this.files[0].size / 1024 / 1024; // in MB
+        if (fileSize > 16) {
+            alert('File size exceeds 16MB. Please choose a smaller file.');
+            this.value = '';
+        }
+    });
+</script>
+{% endblock %}
